@@ -1,31 +1,50 @@
 import React from 'react'
+import { useState , useEffect } from 'react'
 import "./LogIn.css"
-import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 
 const LogIn = ()=>{
-    const [fname,setfname] = useState("")
-    const [lname,setlname] = useState("")
+
     const [email,setemail] = useState("")
     const [password,setpassword] = useState("")
 
-    const register = async function(){
-        let data = await fetch('http://localhost:3001/register' ,{
+    const Nav = useNavigate()
+
+    useEffect(()=>{
+        const data = localStorage.getItem("user")
+        if(data){
+            Nav("/home")
+        }
+    })
+
+    const LogInUser = async function(){
+        let data = await fetch('http://localhost:5000/login',{
             method : "post",
-            body : JSON.stringify({fname,lname,email,password}),
+            body : JSON.stringify({email,password}),
             headers:{
                 'Content-Type':'application/json'
             }
         })
+
+        const res = await data.json();
+
+        if(res.data != undefined){
+        localStorage.setItem("user",JSON.stringify(res))
+        Nav("/home")
+        }else{
+            alert(res.msg)
+        }
+        
+        
+      
     }
-    return (
+    return(
         <div>
-            <h1 className='title'>Registration </h1>
-            <input className= "logIn" value={fname} onChange = {(event)=>setfname (event.target.value)} type="text" placeholder='Enter your first name'/>
-            <input className= "logIn" value={lname} onChange = {(event)=>setlname (event.target.value)} type="text" placeholder='Enter your last name'/>
-            <input className= "logIn" value={email} onChange = {(event)=>setemail (event.target.value)} type="text" placeholder='Enter your Email'/>
-            <input className= "logIn" value={password} onChange = {(event)=>setpassword (event.target.value)} type="text" placeholder='Enter your Password'/>
-            <button onClick={register} className = "button" type='button' > Register </button>
+            <h1 className= "title">LogIn</h1>
+            <input className= "LogInClass" value={email} onChange = {(event)=>setemail (event.target.value)} type="text" placeholder='Enter your Email'/>
+            <input className= "LogInClass" value={password} onChange = {(event)=>setpassword (event.target.value)} type="text" placeholder='Enter your Password'/>
+            <button onClick={LogInUser} className = "button" type='button' > LogIn </button>
         </div>
     )
 }

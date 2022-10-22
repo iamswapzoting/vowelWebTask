@@ -25,9 +25,9 @@ const transporter = nodeMailer.createTransport({
 const userRegister = async function (req, res) {
 
     try {
+       
         let { fname, lname, email, password } = req.body;
-        console.log(req.body);
-
+        
         // first Name validation
         if (typeof (fname) != 'string' || !fname) return res.status(404).send({ msg: "first Name is required" })
         if (!fname.match(userCheck)) return res.status(400).send({ msg: "first Name is not valid " })
@@ -46,7 +46,7 @@ const userRegister = async function (req, res) {
 
         //Email unique
         const userEmail = await userModel.findOne({ email: email }); //email exist or not
-        if (userEmail) { return res.status(404).send({ status: false, msg: "Email already exist" }); }
+        if (userEmail) { return res.status(400).send({ status: false, msg: "Email already exist" }); }
 
 
         //generating secrete key to verify email
@@ -67,11 +67,11 @@ const userRegister = async function (req, res) {
 
         transporter.sendMail(mailOptions, async function (error, info) {
             if (error) {
-                return res.status(404).send({ msg: error.message })
+                return res.status(404).json({ msg: error.message })
             } else {
                 // create entry of user in Database
                 let savedData = await userModel.create(req.body);
-                return res.status(201).send({ msg: "registration Done Successfully please Check Email for Email verification" })
+                return res.status(201).json({ msg: "registration Done Successfully please Check Email for Email verification" })
             }
         })
         // res.setHeader("x-api-key", token);
@@ -100,7 +100,11 @@ const loginUser = async function (req, res) {
         let email = req.body.email;
         let password = req.body.password;
 
-        let user = await userModel.findOne({ email: email, password: password });
+        if(!email) return res.status(404).send({ status: false, msg: "please Input Email" });
+
+        if(!password) return res.status(404).send({ status: false, msg: "please Input password" });
+
+        let user = await userModel.findOne({ email: email, password: password }).select({password:0})
 
         if (!user) return res.status(404).send({ status: false, msg: "Email-Id or the password is not exist" });
 
@@ -115,7 +119,7 @@ const loginUser = async function (req, res) {
         );
         res.setHeader("x-api-key", token);
         //return res.redirected("http://localhost:3000/......")
-        return res.status(200).send({ status: true, data: user });
+        return res.status(200).send({ status: true, data: user , });
     }
     catch (error) {
         console.log("This is the error :", error.message)
