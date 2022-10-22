@@ -15,8 +15,8 @@ const transporter = nodeMailer.createTransport({
     secure: false,
     requireTLS: true,
     auth: {
-        user: "wikineel26@gmail.com",
-        pass: "tbtecbunjesjfhzd"
+        user: "",
+        pass: ",
     }
 });
 
@@ -59,7 +59,7 @@ const userRegister = async function (req, res) {
         );
 
         const mailOptions = {
-            from: "wikineel26@gmail.com",
+            from: ",
             to: email,
             subject: "Email verification",
             text: "http://localhost:3000/token/" + token
