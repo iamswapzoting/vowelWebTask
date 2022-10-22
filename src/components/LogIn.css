@@ -1,0 +1,26 @@
+.logIn{
+    display: block;
+    margin: 25px;
+    padding: 7px;
+    width: 300px;
+    border: 2px solid lightgreen;
+    text-align: center; 
+    margin-left: 37%;
+   
+}
+
+.button{
+    width: 150px;
+    height: 30px;
+    margin-left: -70px;
+    padding: 7px;
+    text-align: center; 
+    background-color: lightgreen;
+
+}
+
+.title{
+    text-align: center; 
+    margin-left: -50px;
+    border-radius: 2px ;
+}
