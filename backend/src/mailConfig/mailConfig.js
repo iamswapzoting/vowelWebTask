@@ -10,14 +10,14 @@
 //         secure: false,
 //         // requireTLS: true,
 //         auth: {
-//             user: "wikineel26@gmail.com",
-//             pass: "neelwiki26"
+//             user: ,
+//             pass: ,
 //         }
 //     })
 
 //     const sendEmailNow = await config.sendMail({
-//         from:"crickneel@gmail.com",
-//         to: "wikineel26@gmail.com",
+//         from:,
+//         to: ,
 //         subject: "Email verification",
 //         text: token,
 //         html :"<h1>hiii</h1> "
